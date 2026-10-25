@@ -1,0 +1,31 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" fill="none">
+  <defs>
+    <linearGradient id="bg" x1="56" y1="38" x2="456" y2="474" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#171B3B"/>
+      <stop offset="1" stop-color="#090D20"/>
+    </linearGradient>
+    <linearGradient id="bubble" x1="118" y1="105" x2="393" y2="410" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#B6FFF0"/>
+      <stop offset="1" stop-color="#69DCCB"/>
+    </linearGradient>
+    <linearGradient id="chart" x1="164" y1="306" x2="351" y2="205" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#8178FF"/>
+      <stop offset="1" stop-color="#C5A7FF"/>
+    </linearGradient>
+    <filter id="shadow" x="76" y="76" width="360" height="366" color-interpolation-filters="sRGB" filterUnits="userSpaceOnUse">
+      <feDropShadow dx="0" dy="14" stdDeviation="18" flood-color="#030611" flood-opacity=".42"/>
+    </filter>
+  </defs>
+  <rect width="512" height="512" rx="116" fill="url(#bg)"/>
+  <circle cx="390" cy="125" r="4" fill="#B8B5FF" opacity=".75"/>
+  <circle cx="112" cy="346" r="3" fill="#7DE9D7" opacity=".62"/>
+  <circle cx="380" cy="374" r="2.5" fill="#B8B5FF" opacity=".55"/>
+  <g filter="url(#shadow)">
+    <path d="M130 143C130 121.461 147.461 104 169 104H343C364.539 104 382 121.461 382 143V285C382 306.539 364.539 324 343 324H239L177 377V324H169C147.461 324 130 306.539 130 285V143Z" fill="url(#bubble)"/>
+    <path d="M190 270L235 225L272 249L329 184" stroke="url(#chart)" stroke-width="20" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M296 184H329V217" stroke="url(#chart)" stroke-width="20" stroke-linecap="round" stroke-linejoin="round"/>
+    <circle cx="190" cy="270" r="10" fill="#171B3B"/>
+  </g>
+  <path d="M194 397H318" stroke="#343A65" stroke-width="8" stroke-linecap="round" opacity=".85"/>
+  <path d="M223 422H289" stroke="#343A65" stroke-width="8" stroke-linecap="round" opacity=".55"/>
+</svg>

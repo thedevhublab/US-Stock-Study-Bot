@@ -1,0 +1,29 @@
+services:
+  - type: worker
+    name: us-stock-study-bot
+    runtime: python
+    region: singapore
+    plan: starter
+    buildCommand: python -m pip install -e '.[ai]'
+    startCommand: python main.py
+    disk:
+      name: studybot-data
+      mountPath: /var/data
+      sizeGB: 1
+    envVars:
+      - key: DATABASE_PATH
+        value: /var/data/studybot.sqlite3
+      - key: TIMEZONE
+        value: Asia/Seoul
+      - key: DAILY_BRIEFING_TIME
+        value: "08:00"
+      - key: NEWS_MAX_ARTICLES
+        value: "8"
+      - key: AI_ENABLED
+        value: "true"
+      - key: OPENAI_MODEL
+        value: gpt-5.5
+      - key: DISCORD_BOT_TOKEN
+        sync: false
+      - key: OPENAI_API_KEY
+        sync: false

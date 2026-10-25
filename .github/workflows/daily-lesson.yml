@@ -1,0 +1,27 @@
+name: Daily US stock lesson
+
+on:
+  schedule:
+    - cron: "0 8 * * *"
+      timezone: Asia/Seoul
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  post-daily-lesson:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v7
+      - name: Set up Python
+        uses: actions/setup-python@v7
+        with:
+          python-version: "3.11"
+      - name: Post lesson to Discord
+        env:
+          DISCORD_WEBHOOK_URL: ${{ secrets.DISCORD_WEBHOOK_URL }}
+          FOUNDATION_START_DATE: ${{ vars.FOUNDATION_START_DATE }}
+        run: python -m studybot.daily_lesson
