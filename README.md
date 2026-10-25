@@ -80,14 +80,14 @@ Render의 상시 Background Worker와 영구 디스크는 무료 플랜에서 �
 
 ## GitHub Actions로 매일 수업 보내기 (무료/저비용 대안)
 
-맥을 꺼도 매일 오전 8시(Asia/Seoul)에 오늘의 커리큘럼을 Discord 채널로 게시하는 workflow가 `.github/workflows/daily-lesson.yml`에 있습니다. `/lesson`의 학습목표·설명·사례·시장 연결·혼동 주의, 퀴즈 3개, spoiler로 숨긴 정답/해설, 복습 기록을 웹훅으로 보냅니다.
+맥을 꺼도 매일 오전 8시(Asia/Seoul)에 Discord 채널로 게시하는 workflow가 `.github/workflows/daily-lesson.yml`에 있습니다. 설정한 시작일부터 28일 동안은 학습목표·설명·사례·시장 연결·혼동 주의, 퀴즈 3개와 정답/해설이 있는 수업을 보냅니다. 29일째부터는 매일 실제 RSS 뉴스, 최근 완료 거래일의 지수 종가, 확인 가능한 향후 경제 일정을 브리핑합니다. 이 뉴스 기능은 28일 코스와 독립적으로 계속 실행됩니다.
 
 1. Discord 채널 설정에서 **연동 → 웹후크 → 새 웹후크**를 만들고 웹후크 URL을 복사합니다.
 2. GitHub 저장소의 **Settings → Secrets and variables → Actions**에서 `DISCORD_WEBHOOK_URL` Secret을 만들고 URL을 값으로 저장합니다.
-3. 같은 화면의 **Variables**에 `FOUNDATION_START_DATE`를 만들고 첫 수업 날짜를 `YYYY-MM-DD`로 설정합니다. 이 날짜부터 28일 동안 기초 코스가 진행되고 그 이후에는 기초 수업을 반복하지 않도록 계속 학습 트랙을 순환 게시합니다.
+3. 같은 화면의 **Variables**에 `FOUNDATION_START_DATE`를 만들고 첫 수업 날짜를 `YYYY-MM-DD`로 설정합니다. 해당 날짜를 1일 차로 세어 28일간 기초 코스를 게시하고, 29일째부터는 뉴스 브리핑으로 자동 전환합니다.
 4. 프로젝트를 기본 브랜치에 커밋/푸시합니다. GitHub의 **Actions** 탭에서 workflow가 활성화됐는지 확인합니다. `workflow_dispatch`로 수동 시험도 가능합니다.
 
-이 대안은 미리 만든 학습 게시물을 전달하는 기능입니다. Discord에서 slash command를 상시 받거나, 개인 답변을 저장·채점하거나, 최근 뉴스와 사용자별 오답으로 수업을 고르는 서버 기능은 제공하지 않습니다. GitHub 예약 실행은 혼잡 시 지연될 수 있습니다. 표준 runner는 공개 저장소에서 무료이고, 비공개 저장소의 GitHub Free 계정에는 월 2,000분이 포함됩니다. GitHub Actions는 테스트와 정기 작업에 적합하며, 지속 연결 봇 프로세스를 대신하지 않습니다.
+이 대안은 Discord에서 slash command를 상시 받거나, 개인 답변을 저장·채점하는 기능은 제공하지 않습니다. 뉴스는 각 실행 때 RSS 등 공개 공급원에서 새로 가져오며, 공급원 장애 시 누락 또는 오류 표시가 생길 수 있습니다. GitHub 예약 실행은 혼잡 시 지연될 수 있습니다. 표준 runner는 공개 저장소에서 무료이고, 비공개 저장소의 GitHub Free 계정에는 월 2,000분이 포함됩니다. GitHub Actions는 테스트와 정기 작업에 적합하며, 지속 연결 봇 프로세스를 대신하지 않습니다.
 
 프로세스 재시작 후 APScheduler는 다음 예정 시각에 다시 예약합니다. 과거 발송분을 자동으로 백필하지 않습니다. 사용자별 일자 중복 키로 중복 발송을 제한하며, Discord 전송 실패 시 해당 일자 예약은 제거되어 재시도 가능합니다. 여러 조각으로 나눈 메시지 도중 전송이 끊기면 일부 중복/누락 가능성이 있습니다.
 
