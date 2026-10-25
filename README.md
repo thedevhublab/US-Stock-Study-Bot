@@ -47,10 +47,53 @@ pytest
 
 ## Discord 애플리케이션 설정
 
-1. Discord Developer Portal에서 Application과 Bot을 만들고 Bot Token을 발급합니다. 토큰을 공개 저장소나 메시지에 올리지 마세요.
-2. OAuth2 URL Generator에서 `bot`과 `applications.commands` 범위를 선택하고 봇을 서버에 초대합니다. 봇에 메시지 보내기 권한을 부여합니다. DM 브리핑은 사용자가 서버 구성원이며 DM 수신을 허용해야 합니다.
-3. `.env`에 `DISCORD_BOT_TOKEN`과 선택적으로 서버의 숫자 `DISCORD_GUILD_ID`를 넣습니다.
-4. 봇을 실행하고 `/help`를 호출합니다. Guild ID를 주면 해당 서버 명령어를 동기화합니다.
+Discord 봇 토큰은 **각자 자기 봇 앱에서 발급**해야 합니다. 다른 사람은 저장소 코드를 복사해 자기 Discord 봇으로 실행합니다. 저장소 소유자의 토큰이나 OpenAI API 키를 받을 필요가 없습니다.
+
+### 1) 각자의 Discord 봇 만들기
+
+1. [Discord Developer Portal](https://discord.com/developers/applications)에서 **New Application**을 눌러 자기 앱을 만듭니다.
+2. 왼쪽의 **Bot** 메뉴에서 봇을 추가하고 **Reset Token** 또는 **View Token**으로 토큰을 발급·복사합니다. 이 토큰은 비밀번호처럼 다루고 다른 사람에게 보내거나 GitHub에 올리지 마세요.
+3. **OAuth2 → URL Generator**에서 `bot`과 `applications.commands`를 선택합니다. 권한은 최소한 `View Channels`, `Send Messages`, `Embed Links`를 선택하고, 생성된 링크를 열어 자기 Discord 서버에 봇을 초대합니다.
+4. 여러 서버에 초대할 계획이라면 Developer Portal의 **Bot** 설정에서 공개 초대를 허용해야 합니다. 초대하는 사람은 해당 서버에서 봇을 추가할 권한이 있어야 합니다.
+
+### 2) 코드 내려받고 키 입력하기 (macOS)
+
+저장소 페이지에서 **Code → HTTPS** 주소를 복사한 뒤 터미널에서 실행합니다. `<저장소 주소>` 부분은 복사한 주소로 바꿉니다.
+
+```bash
+git clone <저장소 주소>
+cd US-Stock-Study-Bot
+python3 -m venv .venv
+source .venv/bin/activate
+python -m pip install -e '.[ai]'
+cp .env.example .env
+open -e .env
+```
+
+열린 `.env` 파일에서 자기 설정을 입력하고 저장합니다.
+
+```dotenv
+DISCORD_BOT_TOKEN=여기에_자기_Discord_봇_토큰
+DISCORD_GUILD_ID=
+AI_ENABLED=true
+OPENAI_API_KEY=여기에_자기_OpenAI_API_키
+```
+
+OpenAI API 키는 [OpenAI API 플랫폼](https://platform.openai.com/api-keys)에서 각자 발급합니다. API 사용료는 각자의 OpenAI 계정에 청구됩니다. AI 기능을 사용하지 않으려면 `AI_ENABLED=false`로 두고 OpenAI 키를 비워도 봇의 기본 기능은 작동합니다.
+
+`DISCORD_GUILD_ID`는 비워 두면 전역 슬래시 명령어를 동기화해 초대한 서버에서 사용할 수 있습니다. 개발 중 특정 서버에 빠르게 명령어를 등록하려는 경우에만 해당 서버 ID를 입력하세요.
+
+### 3) 봇 실행하기
+
+```bash
+python main.py
+```
+
+터미널에 Discord 연결 완료 메시지가 나오면 실행 중입니다. Discord 서버에서 `/help`를 입력해 확인하세요. 이 방식은 터미널과 컴퓨터가 켜져 있는 동안 작동합니다. 컴퓨터를 꺼도 계속 실행하려면 각자 Render 같은 상시 실행 호스팅에 자기 봇 토큰과 필요한 API 키를 등록해야 합니다.
+
+### 비밀 키 안전하게 보관하기
+
+`.env`에는 봇 토큰과 API 키가 들어 있으므로 **GitHub에 올리지 마세요**. 이 저장소는 `.env`를 Git에서 제외하도록 설정되어 있습니다. 커밋 전에 `git status`를 확인하고 `.env`가 목록에 없는지 확인하세요. 키를 실수로 공개 저장소에 올렸다면 파일을 지우는 것만으로 끝나지 않으므로 Discord Developer Portal에서 봇 토큰을 재발급하고 OpenAI 키도 폐기한 뒤 새 키로 바꾸세요.
 
 ## 명령어
 
